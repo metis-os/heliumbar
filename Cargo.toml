@@ -1,0 +1,17 @@
+[package]
+name = "heliumbar"
+version = "0.1.0"
+edition = "2021"
+authors = [ "PwnWriter < hey@pwnwriter.xyz >" ]
+description = "A simple noble and non-reactive bar for wayland"
+readme = "README.md"
+repository = "https://github.com/pwnwriter/heliumbar"
+homepage = "https://github.com/pwnwriter/heliumbar.git"
+license = "MIT"
+keywords = ["unixporn", "Hyprland", "cursedbar"]
+categories = ["accessibility", "command-line" ]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hyprland = "0.3.9"
