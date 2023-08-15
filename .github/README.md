@@ -3,4 +3,4 @@
 
 ## preview
 
-![image](../resources/preview.png)
+![image](showcase/preview.png)

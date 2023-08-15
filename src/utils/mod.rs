@@ -1,2 +1,3 @@
-pub mod command;
-pub use command::run_commands;
+pub mod informations;
+pub mod ui;
+pub mod widget;
