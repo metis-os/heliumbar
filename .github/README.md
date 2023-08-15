@@ -3,4 +3,4 @@
 
 ## preview
 
-![image](showcase/preview.png)
+![image](showcase/phase_2.png)
