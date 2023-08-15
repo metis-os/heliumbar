@@ -14,4 +14,6 @@ categories = ["accessibility", "command-line" ]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-hyprland = "0.3.9"
+gtk = { version = "0.17.0", package = "gtk" }
+gtk-layer-shell = "0.6.1"
+json = "0.12.4"
