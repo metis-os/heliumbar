@@ -20,7 +20,7 @@ pub fn build_widgets(window: &ApplicationWindow) {
 
     root.add(&left);
 
-    let info = crate::utils::informations::Info::new().unwrap();
+    let info = crate::components::informations::Info::new().unwrap();
 
     let button_left = Button::builder().label(&format!("{}", info.os_release)).build();
     let button_center = Button::builder().label(&format!("{}", info.uptime)).build();
