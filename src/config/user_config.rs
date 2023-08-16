@@ -1,16 +1,17 @@
-use crate::components::informations;
-use crate::config::json_parser;
-use directories::ProjectDirs;
+// use json;
+//hello
 
-pub fn read_config() -> informations::Info {
-    if let Some(proj_dirs) = ProjectDirs::from("Heliumbar", "PwnWriter", "helium") {
-        let config_dir = proj_dirs.config_dir();
+pub fn read_config() -> Option<json::JsonValue> {
+    let user = std::env::var("HOME").expect("Unable to find the user name");
+    let mut path = String::from(&user);
+    path.push_str("/.config/heliumbar/helium.conf");
+    println!("{}", path);
+    let data = std::fs::read_to_string(&path).unwrap();
 
-        dbg!("{}", config_dir);
-
-        let default_config = informations::Info::new().unwrap();
-        let config_file = std::fs::read_to_string(config_dir.join("helium.conf"));
-
-        println!("{}", config_file);
+    let config = json::parse(&data);
+    if config.is_err() {
+        println!("Error occur parsing the json. Switching to default conf");
+        return Some(config.unwrap());
     }
+    return Some(config.unwrap());
 }
