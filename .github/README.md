@@ -1,4 +1,3 @@
-# A charming aesthetic bar, radiating nobility and cuteness, for Wayland // wlroots
 
 ## WIP
 
