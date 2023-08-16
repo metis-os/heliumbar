@@ -24,15 +24,15 @@ pub fn build_widgets(window: &ApplicationWindow) {
 
     let info = crate::components::informations::Info::new().unwrap();
 
-    let button_left = Button::builder()
-        .label(&format!("{}", info.os_release))
-        .build();
-    let button_center = Button::builder().label(&format!("{}", info.uptime)).build();
-    let button_right = Button::builder().label(&format!("{}", info.kernel)).build();
+    // let button_left = Button::builder()
+    //     .label(&format!("{}", info.os_release))
+    //     .build();
+    // let button_center = Button::builder().label(&format!("{}", info.uptime)).build();
+    // let button_right = Button::builder().label(&format!("{}", info.kernel)).build();
 
-    left.add(&button_left);
-    centered.add(&button_center);
-    right.add(&button_right);
+    // left.add(&button_left);
+    // centered.add(&button_center);
+    // right.add(&button_right);
 
     window.add(&root);
     render_config(left, right, centered);
