@@ -26,6 +26,11 @@
             "command":"",
             "refresh-rate":"12",
             "tooltip":"Hello world"
+          },
+          "toggle":{
+            "text":"Click Me",
+            "type":"button",
+            "align":"center"
           }
 
 

@@ -1,11 +1,12 @@
 // Create a widget in the menus
 
-use gtk::gdk::keys::constants::comma;
 use gtk::prelude::*;
+use gtk::ApplicationWindow;
 use gtk::Orientation;
-use gtk::{ApplicationWindow, Button};
 
 use crate::config;
+use crate::utils;
+use crate::widgets::ButtonWidget;
 use crate::widgets::LabelWidget;
 
 fn build_config_else_default(
@@ -32,6 +33,33 @@ fn build_config_else_default(
     return true;
 }
 
+fn load_css() {
+    let user = std::env::var("HOME");
+    if let Err(err) = user {
+        println!("{}", err);
+        return;
+    }
+    let mut path = user.unwrap();
+    path.push_str(&utils::constants::CONFIG_STYLE);
+
+    let provider = gtk::CssProvider::new();
+    if let Err(err) = provider.load_from_path(&path) {
+        println!("{}", err);
+        return;
+    }
+
+    let screen = gtk::gdk::Screen::default();
+    if let None = screen {
+        return;
+    }
+
+    gtk::StyleContext::add_provider_for_screen(
+        &screen.unwrap(),
+        &provider,
+        gtk::STYLE_PROVIDER_PRIORITY_USER,
+    );
+}
+
 pub fn build_widgets(window: &ApplicationWindow) {
     let root = gtk::Box::new(Orientation::Horizontal, 0);
     let left = gtk::Box::new(Orientation::Horizontal, 0);
@@ -53,6 +81,7 @@ pub fn build_widgets(window: &ApplicationWindow) {
     }
 
     window.add(&root);
+    load_css();
     window.show_all();
 }
 
@@ -114,7 +143,11 @@ pub fn render_custom_widgets(
         };
 
         if type_of_widget == "label" {
-            LabelWidget::build_label(&left, &centered, &right, data)
-        } //if case
+            LabelWidget::build_label(&left, &centered, &right, data);
+        } else if type_of_widget == "button" {
+            ButtonWidget::build_button(&left, &centered, &right, data);
+        } else {
+            LabelWidget::build_label(&left, &centered, &right, data);
+        }
     } //for
 }

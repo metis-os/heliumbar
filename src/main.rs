@@ -4,7 +4,10 @@ mod ui;
 mod utils;
 mod widgets;
 
-use gtk::prelude::{ApplicationExt, ApplicationExtManual};
+use gtk::{
+    prelude::{ApplicationExt, ApplicationExtManual},
+    traits::CssProviderExt,
+};
 
 fn main() -> gtk::glib::ExitCode {
     const APP_ID: &str = "com.heliumbar";
@@ -14,6 +17,5 @@ fn main() -> gtk::glib::ExitCode {
     app.connect_activate(|app| {
         ui::elements::build_ui(app);
     });
-
     app.run()
 }

@@ -3,6 +3,8 @@
 
 use json::Error;
 
+use crate::utils;
+
 pub fn read_file(path: &String) -> Option<String> {
     let data = match std::fs::read_to_string(&path) {
         Ok(content) => content,
@@ -29,7 +31,7 @@ pub fn get_config_path() -> Option<String> {
         return None;
     }
     let mut path = String::from(&user.unwrap());
-    path.push_str("/.config/heliumbar/helium.json");
+    path.push_str(utils::constants::CONFIG_PATH);
     Some(path)
 }
 
