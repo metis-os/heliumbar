@@ -3,27 +3,27 @@
     "transpareny":0.1,
     "background":"#ff0000",
     "widgets":{
-        "btn1":{
-            "text":"left",
-            "type":"button",
+        "cpu":{
+            "text":"5%",
+            "type":"label",
             "align":"left",
-            "command":"cpu-usage",
+            "command":"",
             "refresh-rate":"12",
             "tooltip":"Hello world"
           },
-        "btn2":{
-            "text":"click Me",
-            "type":"button",
+        "battery":{
+            "text":"B:50%",
+            "type":"label",
             "align":"center",
-            "command":"cpu-usage",
+            "command":"",
             "refresh-rate":"12",
             "tooltip":"Hello world"
           },
-          "right":{
-            "text":"Bye Bye",
-            "type":"button",
+          "ram":{
+            "text":"7.8G",
+            "type":"label",
             "align":"right",
-            "command":"cpu-usage",
+            "command":"",
             "refresh-rate":"12",
             "tooltip":"Hello world"
           }
