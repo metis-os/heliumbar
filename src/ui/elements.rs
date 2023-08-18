@@ -4,6 +4,7 @@ use crate::config;
 use crate::ui::widget::build_widgets;
 use gtk::gdk::*;
 use gtk::prelude::*;
+use gtk::Orientation;
 use gtk::{Application, ApplicationWindow};
 use gtk_layer_shell;
 use gtk_layer_shell::Edge;
@@ -15,12 +16,18 @@ pub fn build_ui(app: &Application) {
     gtk_layer_shell::set_layer(&window, gtk_layer_shell::Layer::Top);
 
     gtk_layer_shell::auto_exclusive_zone_enable(&window);
-
     window.set_app_paintable(true);
 
     let config = read_window_config();
 
+    let mut orientation = Orientation::Horizontal;
+
     if let Some(data) = config {
+        match &data.position {
+            Edge::Left => orientation = Orientation::Vertical,
+            Edge::Right => orientation = Orientation::Vertical,
+            _ => (),
+        }
         align_layer(&window, &data.position);
         window.connect_draw(move |win, context| draw(&win, context, &data));
     } else {
@@ -32,7 +39,7 @@ pub fn build_ui(app: &Application) {
     gtk_layer_shell::set_monitor(&window, &monitor);
 
     window.connect_destroy(|_| gtk::main_quit());
-    build_widgets(&window);
+    build_widgets(&window, orientation);
 }
 
 pub fn align_layer(window: &ApplicationWindow, align: &Edge) {
@@ -92,14 +99,18 @@ pub fn read_window_config() -> Option<LayerConfig> {
         .as_str()
         .unwrap_or("#000000")
         .to_string();
-    let position: String = config["position"].as_str().unwrap_or("#000000").to_string();
+    let position: String = config["align"].as_str().unwrap_or("#000000").to_string();
     let pos: Edge;
     if position == "top" {
-        pos = Edge::Top
+        pos = Edge::Top;
     } else if position == "bottom" {
-        pos = Edge::Bottom
+        pos = Edge::Bottom;
+    } else if position == "left" {
+        pos = Edge::Left;
+    } else if position == "right" {
+        pos = Edge::Right;
     } else {
-        pos = Edge::Top
+        pos = Edge::Top;
     }
 
     let mut sep_col = extract_color(&color);

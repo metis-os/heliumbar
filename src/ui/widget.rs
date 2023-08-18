@@ -3,6 +3,7 @@
 use gtk::prelude::*;
 use gtk::ApplicationWindow;
 use gtk::Orientation;
+use gtk_layer_shell::Edge;
 
 use crate::config;
 use crate::utils;
@@ -60,13 +61,17 @@ fn load_css() {
     );
 }
 
-pub fn build_widgets(window: &ApplicationWindow) {
-    let root = gtk::Box::new(Orientation::Horizontal, 0);
-    let left = gtk::Box::new(Orientation::Horizontal, 0);
-    let centered = gtk::Box::new(Orientation::Horizontal, 0);
-    let right = gtk::Box::new(Orientation::Horizontal, 0);
+pub fn build_widgets(window: &ApplicationWindow, orientation: Orientation) {
+    // let orientation = Orientation::Horizontal;
+    let root = gtk::Box::new(orientation, 0);
+    let left = gtk::Box::new(orientation, 0);
+    let centered = gtk::Box::new(orientation, 0);
+    let right = gtk::Box::new(orientation, 0);
 
     root.style_context().add_class("root");
+    left.style_context().add_class("left");
+    centered.style_context().add_class("center");
+    right.style_context().add_class("right");
 
     root.set_widget_name("root");
     left.set_widget_name("left");
@@ -97,7 +102,7 @@ pub struct WidgetConfig {
     // pub type_of_widget: String,
     pub align: Align,
     pub command: String,
-    pub refresh_rate: String,
+    pub refresh_rate: i64,
     pub tooltip: String,
     pub name_of_widget: String,
 }
@@ -127,10 +132,7 @@ pub fn render_custom_widgets(
         let type_of_widget = value_json["type"].as_str().unwrap_or("").to_string();
         let align = check_alignment(&value_json["align"].as_str().unwrap_or("").to_string());
         let command = value_json["command"].as_str().unwrap_or("").to_string();
-        let refresh_rate = value_json["refresh-rate"]
-            .as_str()
-            .unwrap_or("")
-            .to_string();
+        let refresh_rate = value_json["refresh-rate"].as_i64().unwrap_or(0);
         let tooltip = value_json["tooltip"].as_str().unwrap_or("").to_string();
         let name_of_widget = key.to_string();
 
