@@ -1,8 +1,6 @@
 // use json;
 //hello
 
-use json::Error;
-
 use crate::utils;
 
 pub fn read_file(path: &String) -> Option<String> {

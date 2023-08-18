@@ -66,6 +66,8 @@ pub fn build_widgets(window: &ApplicationWindow) {
     let centered = gtk::Box::new(Orientation::Horizontal, 0);
     let right = gtk::Box::new(Orientation::Horizontal, 0);
 
+    root.style_context().add_class("root");
+
     root.set_widget_name("root");
     left.set_widget_name("left");
     centered.set_widget_name("centered");
