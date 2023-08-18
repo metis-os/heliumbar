@@ -21,8 +21,9 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
         Align::LEFT => left.add(&label),
         Align::RIGHT => right.add(&label),
     }
+
     if config.refresh_rate > 0 && config.command.len() > 0 {
-        update_widget(label.clone());
+        update_widget(label);
     }
     // println!("lenght of command{}", config.command.len());
 }
