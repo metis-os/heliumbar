@@ -1,0 +1,18 @@
+.cpu{
+  color:white;
+  font-size:15px;
+  padding:5px 10px;
+}
+
+.toggle{
+  background-color:#000000;
+  font-size:20px;
+  color:red;
+  padding:5px 30px;
+}
+
+
+.root{
+  padding:0 80px;
+}
+
