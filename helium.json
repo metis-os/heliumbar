@@ -20,11 +20,11 @@
             "refresh-rate":0
           },
           "ram":{
-            "format":"7.8G",
+            "format":"{}",
             "type":"label",
             "align":"right",
-            "command":"",
-            "refresh-rate":0
+            "command":"hyprctl activewindow | grep \" *title:\" | cut -d: -f2",
+            "refresh-rate":1
           }
         
       }

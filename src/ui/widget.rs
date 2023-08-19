@@ -3,7 +3,7 @@
 use gtk::prelude::*;
 use gtk::ApplicationWindow;
 use gtk::Orientation;
-use gtk_layer_shell::Edge;
+// use gtk_layer_shell::Edge;
 
 use crate::config;
 use crate::utils;

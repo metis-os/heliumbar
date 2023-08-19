@@ -1,5 +1,4 @@
 // This will contain default informations to show in the bar
-
 pub struct Info {
     pub os_release: String,
     pub uptime: String,
@@ -19,4 +18,3 @@ impl Info {
         })
     }
 }
-
