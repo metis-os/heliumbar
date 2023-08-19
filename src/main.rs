@@ -1,4 +1,3 @@
-mod components;
 mod config;
 mod ui;
 mod utils;
