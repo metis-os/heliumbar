@@ -4,27 +4,28 @@
     "background":"#000000",
     "widgets":{
         "time":{
-            "format":"Time:{}",
+            "format":"    {} %",
             "type":"label",
             "is_json":false,
             "align":"left",
-            "command":"date",
+            "command":"cat /sys/class/power_supply/*/capacity",
             "refresh-rate":1
           },
         "cpu":{
-            "format":"ave:{average} fre:{frequency} core:{core}",
+            "format":"󰃜 {} %",
             "type":"label",
             "align":"center",
-            "is_json":true,
-            "command":"echo '{\"average\":\"30\",\"frequency\":\"520Hz\",\"core\":\"8\"}'",
-            "refresh-rate":0
+            "is_json":false,
+            "command":"brillo | cut -d . -f1",
+            "refresh-rate":1
           },
           "ram":{
-            "format":"7.8G",
+            "format":"󱂬  {workspace.id} t:{title}",
             "type":"label",
             "align":"right",
-            "command":"",
-            "refresh-rate":0
+            "is_json":true,
+            "command":"hyprctl activewindow -j",
+            "refresh-rate":1
           }
         
       }
