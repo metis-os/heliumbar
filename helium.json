@@ -20,12 +20,9 @@
             "refresh-rate":0
           },
           "ram":{
-            "format":"w:{workspace.id} t:{title}",
-            "type":"label",
-            "align":"right",
-            "is_json":true,
-            "command":"hyprctl activewindow -j",
-            "refresh-rate":1
+            "format":"{workspace}:{activewindow}",
+            "type":"hyprland",
+            "align":"right"
           }
         
       }

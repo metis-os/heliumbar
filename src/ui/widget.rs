@@ -6,6 +6,7 @@ use gtk::Orientation;
 
 use crate::config;
 use crate::utils;
+use crate::widgets::hyprland;
 use crate::widgets::ButtonWidget;
 use crate::widgets::LabelWidget;
 
@@ -146,8 +147,9 @@ pub fn render_custom_widgets(
             tooltip,
             name_of_widget,
         };
-
-        if type_of_widget == "label" {
+        if type_of_widget == "hyprland" {
+            hyprland::build_label(&left, &centered, &right, data);
+        } else if type_of_widget == "label" {
             LabelWidget::build_label(&left, &centered, &right, data);
         } else if type_of_widget == "button" {
             ButtonWidget::build_button(&left, &centered, &right, data);

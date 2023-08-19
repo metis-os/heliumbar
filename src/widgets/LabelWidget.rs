@@ -8,6 +8,8 @@ use std::io::BufRead;
 use std::io::BufReader;
 use std::process::{Command, Stdio};
 
+use super::workspace::listen;
+
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;
     let mut text = original.clone();
@@ -54,7 +56,7 @@ pub fn update_widget(
     let child = Command::new("zsh")
         .arg("-c")
         .arg(&format!(
-            "while true; do;{}| xargs -d \"\n\";sleep {};done",
+            "while true; do;{};sleep {};done",
             command, refresh_rate
         ))
         .stdout(Stdio::piped())
@@ -77,12 +79,13 @@ pub fn update_widget(
     });
 
     receiver.attach(None, move |data| {
+        // println!("receiver found here{}", data);
         if is_json {
             if let Some(out) = regex_matcher::format(&original, &data) {
                 label.set_text(&out);
             }
         } else {
-            label.set_text(&original.replace("{}", &data));
+            label.set_text(&original.replace("{}", &data.trim().to_string()));
         }
         glib::ControlFlow::Continue
     });

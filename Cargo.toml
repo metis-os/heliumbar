@@ -20,3 +20,5 @@ json = "0.12.4"
 nixinfo = "0.3.3"
 glib = "0.18.1"
 regex = "1.9.3"
+tokio = { version = "1", features = ["full"] }
+tokio-uds = "0.2"
