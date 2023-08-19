@@ -1,7 +1,7 @@
 use gtk::traits::ContainerExt;
 
 use crate::ui::widget::{Align, WidgetConfig};
-use crate::utils::command;
+use crate::utils::{command, regex_matcher};
 use glib::MainContext;
 use gtk::prelude::*;
 use std::io::BufRead;
@@ -9,10 +9,20 @@ use std::io::BufReader;
 use std::process::{Command, Stdio};
 
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
-    let mut text: String = config.text;
-    if config.command.len() > 0 {
-        text = command::run(&config.command).trim().to_string();
-    }
+    let original: String = config.format;
+    let mut text = original.clone();
+    if config.command.len() > 0 && config.refresh_rate == 0 {
+        let out = command::run(&config.command).trim().to_string();
+        if config.is_json {
+            if let Some(data) = regex_matcher::format(&original, &out) {
+                text = data;
+            }
+        }
+        //if json
+        else {
+            text = original.replace("{}", &out);
+        }
+    } //if command
 
     let label = gtk::Label::builder().label(text).build();
     label.style_context().add_class(&config.name_of_widget);
@@ -23,15 +33,18 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
     }
 
     if config.refresh_rate > 0 && config.command.len() > 0 {
-        update_widget(label);
+        update_widget(label, original, config.is_json, config.refresh_rate);
     }
     // println!("lenght of command{}", config.command.len());
 }
 
-pub fn update_widget(label: gtk::Label) {
+pub fn update_widget(label: gtk::Label, original: String, is_json: bool, refresh_rate: i64) {
     let child = Command::new("zsh")
         .arg("-c")
-        .arg("while true; do;echo $(date +\"%Y-%m-%d %H:%M:%S\");sleep 1;done")
+        .arg(&format!(
+            "while true; do;echo $(date +\"%Y-%m-%d %H:%M:%S\");sleep {};done",
+            refresh_rate
+        ))
         .stdout(Stdio::piped())
         .spawn();
 
@@ -52,7 +65,13 @@ pub fn update_widget(label: gtk::Label) {
     });
 
     receiver.attach(None, move |data| {
-        label.set_text(&data);
+        if is_json {
+            if let Some(out) = regex_matcher::format(&original, &data) {
+                label.set_text(&out);
+            }
+        } else {
+            label.set_text(&original.replace("{}", &data));
+        }
         glib::ControlFlow::Continue
     });
 }

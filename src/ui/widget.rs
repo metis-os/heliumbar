@@ -98,13 +98,14 @@ pub enum Align {
     RIGHT,
 }
 pub struct WidgetConfig {
-    pub text: String,
+    pub format: String,
     // pub type_of_widget: String,
     pub align: Align,
     pub command: String,
     pub refresh_rate: i64,
     pub tooltip: String,
     pub name_of_widget: String,
+    pub is_json: bool,
 }
 
 pub fn check_alignment(align: &String) -> Align {
@@ -126,22 +127,23 @@ pub fn render_custom_widgets(
     configs: json::JsonValue,
 ) {
     let widgets = configs["widgets"].entries();
-
     for (key, value_json) in widgets {
-        let text = value_json["text"].as_str().unwrap_or("").to_string();
+        let format = value_json["format"].as_str().unwrap_or("").to_string();
         let type_of_widget = value_json["type"].as_str().unwrap_or("").to_string();
         let align = check_alignment(&value_json["align"].as_str().unwrap_or("").to_string());
         let command = value_json["command"].as_str().unwrap_or("").to_string();
         let refresh_rate = value_json["refresh-rate"].as_i64().unwrap_or(0);
         let tooltip = value_json["tooltip"].as_str().unwrap_or("").to_string();
+        let is_json = value_json["is_json"].as_bool().unwrap_or(false);
         let name_of_widget = key.to_string();
 
         let data = WidgetConfig {
-            text,
+            format,
             // type_of_widget,
             align,
             command,
             refresh_rate,
+            is_json,
             tooltip,
             name_of_widget,
         };

@@ -13,7 +13,7 @@ fn main() -> gtk::glib::ExitCode {
 
     let app = gtk::Application::builder().application_id(APP_ID).build();
 
-    utils::regex_matcher::format();
+    // utils::regex_matcher::format();
     app.connect_activate(build_ui);
     app.run()
 }

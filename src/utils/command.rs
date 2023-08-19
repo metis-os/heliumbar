@@ -5,6 +5,6 @@ pub fn run(command: &String) -> String {
             return String::from_utf8(output.stdout).unwrap();
         }
 
-        Err(_) => return "".to_string(),
+        Err(err) => return err.to_string(),
     } //match
 }

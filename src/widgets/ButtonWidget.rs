@@ -4,7 +4,7 @@ use crate::ui::widget::{Align, WidgetConfig};
 use crate::utils::command;
 use gtk::prelude::*;
 pub fn build_button(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
-    let mut text: String = config.text;
+    let mut text: String = config.format;
     if config.command.len() > 0 {
         text = command::run(&config.command);
     }

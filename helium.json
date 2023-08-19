@@ -3,22 +3,24 @@
     "align":"top",
     "background":"#000000",
     "widgets":{
-        "cpu":{
-            "text":"5%",
+        "time":{
+            "format":"Time: {}",
             "type":"label",
+            "is_json":false,
             "align":"left",
             "command":"date",
             "refresh-rate":1
           },
-        "battery":{
-            "text":"B:50%",
+        "cpu":{
+            "format":"ave:{average} fre:{frequency} core:{core}",
             "type":"label",
             "align":"center",
-            "command":"date",
-            "refresh-rate":1
+            "is_json":"true",
+            "command":"getcpu",
+            "refresh-rate":0
           },
           "ram":{
-            "text":"7.8G",
+            "format":"7.8G",
             "type":"label",
             "align":"right",
             "command":"",

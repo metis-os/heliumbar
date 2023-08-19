@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+echo '{"average":"5%","core":"5","frequency":"523Hz"}'
