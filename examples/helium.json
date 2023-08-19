@@ -1,0 +1,33 @@
+{
+    "alpha":0,
+    "align":"top",
+    "background":"#000000",
+    "widgets":{
+        "time":{
+            "format":"Time:{}",
+            "type":"label",
+            "is_json":false,
+            "align":"left",
+            "command":"date",
+            "refresh-rate":1
+          },
+        "cpu":{
+            "format":"ave:{average} fre:{frequency} core:{core}",
+            "type":"label",
+            "align":"center",
+            "is_json":true,
+            "command":"echo '{\"average\":\"30\",\"frequency\":\"520Hz\",\"core\":\"8\"}'",
+            "refresh-rate":0
+          },
+          "ram":{
+            "format":"7.8G",
+            "type":"label",
+            "align":"right",
+            "command":"",
+            "refresh-rate":0
+          }
+        
+      }
+
+
+  }
