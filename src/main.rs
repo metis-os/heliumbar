@@ -4,7 +4,6 @@ mod utils;
 mod widgets;
 
 use gtk::prelude::{ApplicationExt, ApplicationExtManual};
-
 use crate::ui::elements::build_ui;
 
 fn main() -> gtk::glib::ExitCode {
