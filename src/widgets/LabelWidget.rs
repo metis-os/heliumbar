@@ -33,17 +33,29 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
     }
 
     if config.refresh_rate > 0 && config.command.len() > 0 {
-        update_widget(label, original, config.is_json, config.refresh_rate);
+        update_widget(
+            label,
+            original,
+            config.is_json,
+            config.refresh_rate,
+            &config.command,
+        );
     }
     // println!("lenght of command{}", config.command.len());
 }
 
-pub fn update_widget(label: gtk::Label, original: String, is_json: bool, refresh_rate: i64) {
+pub fn update_widget(
+    label: gtk::Label,
+    original: String,
+    is_json: bool,
+    refresh_rate: i64,
+    command: &str,
+) {
     let child = Command::new("zsh")
         .arg("-c")
         .arg(&format!(
-            "while true; do;echo $(date +\"%Y-%m-%d %H:%M:%S\");sleep {};done",
-            refresh_rate
+            "while true; do;{};sleep {};done",
+            command, refresh_rate
         ))
         .stdout(Stdio::piped())
         .spawn();

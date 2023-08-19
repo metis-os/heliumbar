@@ -16,7 +16,7 @@
             "type":"label",
             "align":"center",
             "is_json":true,
-            "command":"getcpu",
+            "command":"echo '{\"average\":\"30\",\"frequency\":\"520Hz\",\"core\":\"8\"}'",
             "refresh-rate":0
           },
           "ram":{
