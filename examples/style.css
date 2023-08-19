@@ -1,13 +1,24 @@
-.cpu{
-  color:red;
-  font-size:15px;
-  border:1px solid red;
-  padding:5px 10px;
+.root{
+  font-size:17px;
+  margin-top:10px;
+}
+
+.time,.cpu,.ram{
+  background-color:grey;
+  padding:8px 20px;
+  border-radius:7px;
+  color:white;
 }
 
 .toggle{
-  background-color:blue;
+  background-color:#000000;
   font-size:20px;
   color:red;
   padding:5px 30px;
 }
+
+
+.root{
+  padding:0 50px;
+}
+
