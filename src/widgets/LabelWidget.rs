@@ -54,7 +54,7 @@ pub fn update_widget(
     let child = Command::new("zsh")
         .arg("-c")
         .arg(&format!(
-            "while true; do;{};sleep {};done",
+            "while true; do;{}| xargs -d \"\n\";sleep {};done",
             command, refresh_rate
         ))
         .stdout(Stdio::piped())

@@ -1,14 +1,6 @@
-use json;
+use json::{self, JsonValue};
 
 pub fn format(string: &str, json_data: &str) -> Option<String> {
-    // let string = "Hello {name} is {sub} and we are good {main}";
-    // let pattern = r"\{(.*)\}";
-    // let re = regex::Regex::new(pattern).unwrap();
-
-    // if let Some(matches) = re.captures(string) {
-    //     println!("{}", matches.get(1).unwrap().as_str());
-    // }
-    // let json_data = "{\"name\":\"shyam\",\"sub\":\"english\",\"main\":\"good\"}";
     let json_parse = json::parse(&json_data);
     if let Err(err) = json_parse {
         println!("{}", err);
@@ -19,6 +11,7 @@ pub fn format(string: &str, json_data: &str) -> Option<String> {
     let mut is_in_block = false;
     let mut word: String = String::new();
     let mut out = string.to_string();
+    let mut temp;
 
     for c in string.chars() {
         if c == '{' {
@@ -31,10 +24,15 @@ pub fn format(string: &str, json_data: &str) -> Option<String> {
                 word.push(c);
             } else {
                 is_in_block = false;
-                out = out.replace(
-                    &format!("{{{}}}", word),
-                    json_parse[&word].as_str().unwrap_or(""),
-                );
+                let data: Vec<&str> = word.split(".").collect();
+                if data.len() == 1 {
+                    temp = json_parse[&word].to_string();
+                } else if data.len() == 2 {
+                    temp = json_parse[data[0]][data[1]].to_string();
+                } else {
+                    temp = json_parse[data[0]][data[1]][data[2]].to_string();
+                }
+                out = out.replace(&format!("{{{}}}", word), &temp);
                 word.clear();
             }
         }
