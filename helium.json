@@ -15,7 +15,7 @@
             "format":"ave:{average} fre:{frequency} core:{core}",
             "type":"label",
             "align":"center",
-            "is_json":"true",
+            "is_json":true,
             "command":"getcpu",
             "refresh-rate":0
           },
