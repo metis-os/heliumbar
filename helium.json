@@ -1,10 +1,10 @@
 {
-    "alpha":0.5,
+    "alpha":0,
     "align":"top",
     "background":"#000000",
     "widgets":{
         "time":{
-            "format":"Time: {}",
+            "format":"Time:{}",
             "type":"label",
             "is_json":false,
             "align":"left",
