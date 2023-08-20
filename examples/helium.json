@@ -19,14 +19,13 @@
             "command":"brillo | cut -d . -f1",
             "refresh-rate":1
           },
-          "ram":{
-            "format":"󱂬  {workspace.id} t:{title}",
-            "type":"label",
-            "align":"right",
-            "is_json":true,
-            "command":"hyprctl activewindow -j",
-            "refresh-rate":1
+        "ram":{
+            "format":"󱂬   {workspace}:{activewindow}",
+            "type":"hyprland",
+            "align":"right"
+
           }
+
         
       }
 
