@@ -7,7 +7,6 @@ use crate::network::hyprland_socket::listen;
 use crate::utils::{command, regex_matcher};
 use glib::MainContext;
 use gtk::prelude::*;
-// use super::workspace::listen;
 
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;
@@ -42,7 +41,7 @@ pub fn update_widget(label: gtk::Label, original: String) {
         println!("{}", err);
         return;
     }
-    let mut params = get_params(&original);
+    let params = get_params(&original);
     if params.len() == 0 {
         return;
     }
@@ -63,7 +62,6 @@ fn hyprland_signal_receiver(
         // println!("{}", name);
 
         if params.contains_key(&name) {
-            ///
             params.insert(name.trim().to_string(), value.trim().to_string());
             format_text = original.clone();
             for (key, value) in params.clone().into_iter() {
@@ -81,15 +79,15 @@ fn get_params(string: &String) -> HashMap<String, String> {
     // let mut array = Vec::<String>::new();
     let mut params: HashMap<String, String> = HashMap::new();
 
-    for c in string.chars() {
-        if c == '{' {
+    for char in string.chars() {
+        if char == '{' {
             is_in_block = true;
             continue;
         } //if {}
 
         if is_in_block {
-            if c != '}' {
-                word.push(c);
+            if char != '}' {
+                word.push(char);
             } else {
                 is_in_block = false;
                 // println!("{}", word);
