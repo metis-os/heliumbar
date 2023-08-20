@@ -79,15 +79,15 @@ fn get_params(string: &String) -> HashMap<String, String> {
     // let mut array = Vec::<String>::new();
     let mut params: HashMap<String, String> = HashMap::new();
 
-    for char in string.chars() {
-        if char == '{' {
+    for c in string.chars() {
+        if c == '{' {
             is_in_block = true;
             continue;
         } //if {}
 
         if is_in_block {
-            if char != '}' {
-                word.push(char);
+            if c != '}' {
+                word.push(c);
             } else {
                 is_in_block = false;
                 // println!("{}", word);
