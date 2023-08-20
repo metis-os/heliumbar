@@ -1,14 +1,12 @@
 use gtk::traits::ContainerExt;
 
-use crate::ui::widget::{Align, WidgetConfig};
+use crate::builder::widgets_builder::{Align, WidgetConfig};
 use crate::utils::{command, regex_matcher};
 use glib::MainContext;
 use gtk::prelude::*;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::process::{Command, Stdio};
-
-use super::workspace::listen;
 
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;

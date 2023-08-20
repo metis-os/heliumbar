@@ -1,5 +1,5 @@
-use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
-pub async fn connect_socket() -> Option<tokio::net::UnixStream> {
+use tokio::io::{AsyncBufReadExt, BufReader};
+async fn connect_socket() -> Option<tokio::net::UnixStream> {
     let uuid = std::env::var("HYPRLAND_INSTANCE_SIGNATURE");
     if let Err(err) = uuid {
         println!("{}", err);
@@ -27,7 +27,9 @@ pub async fn listen(sender: glib::Sender<(String, String)>) {
     loop {
         while reader.read_line(&mut buffer).await.unwrap_or_default() > 0 {
             if let Some((action_name, action_value)) = buffer.split_once(">>") {
-                sender.send((action_name.to_string(), action_value.to_string()));
+                sender
+                    .send((action_name.to_string(), action_value.to_string()))
+                    .unwrap_or_default();
             }
             buffer.clear();
         } //while
