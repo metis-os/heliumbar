@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use gtk::traits::ContainerExt;
-use json::Error;
+use json::{Error, JsonValue};
 
 use crate::builder::widgets_builder::{Align, WidgetConfig};
 use crate::network::hyprland_socket::listen;
@@ -10,9 +10,7 @@ use glib::MainContext;
 use gtk::prelude::*;
 // use super::workspace::listen;
 
-pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
-    let original: String = config.format;
-    let mut text = original.clone();
+fn setup_default(mut text: String) -> (String, Result<JsonValue, Error>) {
     text = text
         .replace("{workspace}", "{workspace.id}")
         .replace("{activewindow}", "{title}");
@@ -26,7 +24,15 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
     if let Some(data) = regex_matcher::format(&text, &out) {
         text = data;
     }
-    //if json
+
+    return (text, jsondata);
+}
+
+pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
+    let original: String = config.format;
+
+    let (mut text, jsondata) = setup_default(original.clone());
+
     // println!("{}", text);
     let label = gtk::Label::builder().label(text).build();
     label.style_context().add_class(&config.name_of_widget);
