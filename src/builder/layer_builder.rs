@@ -99,7 +99,7 @@ pub fn read_window_config() -> Option<LayerConfig> {
         .as_str()
         .unwrap_or("#000000")
         .to_string();
-    let position: String = config["align"].as_str().unwrap_or("#000000").to_string();
+    let position: String = config["align"].as_str().unwrap_or("top").to_string();
     let pos: Edge;
     if position == "top" {
         pos = Edge::Top;
