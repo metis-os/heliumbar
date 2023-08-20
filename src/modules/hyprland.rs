@@ -11,14 +11,17 @@ use gtk::prelude::*;
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;
     let mut text = original.clone();
+    text = text
+        .replace("{workspace}", "{workspace.id}")
+        .replace("{activewindow}", "{title}");
     let out = command::run(&"hyprctl activewindow -j".to_string())
         .trim()
         .to_string();
-    if let Some(data) = regex_matcher::format("{title}", &out) {
+    if let Some(data) = regex_matcher::format(&text, &out) {
         text = data;
     }
     //if json
-
+    // println!("{}", text);
     let label = gtk::Label::builder().label(text).build();
     label.style_context().add_class(&config.name_of_widget);
     match config.align {
