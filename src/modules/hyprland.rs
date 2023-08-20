@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use gtk::traits::ContainerExt;
 
 use crate::builder::widgets_builder::{Align, WidgetConfig};
@@ -40,7 +42,7 @@ pub fn update_widget(label: gtk::Label, original: String) {
         println!("{}", err);
         return;
     }
-    let params = get_params(&original);
+    let mut params = get_params(&original);
     if params.len() == 0 {
         return;
     }
@@ -52,38 +54,32 @@ pub fn update_widget(label: gtk::Label, original: String) {
 
 fn hyprland_signal_receiver(
     receiver: glib::Receiver<(String, String)>,
-    params: Vec<String>,
+    mut params: HashMap<String, String>,
     original: String,
     label: gtk::Label,
 ) {
-    let mut workspace: String = String::new();
-    let mut window: String = String::new();
+    let mut format_text: String = String::new();
     receiver.attach(None, move |(name, value)| {
         // println!("{}", name);
-        if params.contains(&name) {
-            let text = if name == "activewindow" {
-                window = value.trim().to_string();
-                original
-                    .replace(&format!("{{{}}}", name), &value)
-                    .replace("{workspace}", &workspace)
-            } else {
-                workspace = value.trim().to_string();
-                original
-                    .replace(&format!("{{{}}}", name), &value)
-                    .replace(&format!("{{{}}}", "activewindow"), &window)
-            };
 
-            // let text = &original.replace(&format!("{{{}}}", name), &value);
-            label.set_text(&text.trim());
+        if params.contains_key(&name) {
+            ///
+            params.insert(name.trim().to_string(), value.trim().to_string());
+            format_text = original.clone();
+            for (key, value) in params.clone().into_iter() {
+                format_text = format_text.replace(&format!("{{{}}}", key), &value);
+            }
+            label.set_text(&format_text.trim());
         }
         glib::ControlFlow::Continue
     });
 }
 
-fn get_params(string: &String) -> Vec<String> {
+fn get_params(string: &String) -> HashMap<String, String> {
     let mut is_in_block = false;
     let mut word: String = String::new();
-    let mut array = Vec::<String>::new();
+    // let mut array = Vec::<String>::new();
+    let mut params: HashMap<String, String> = HashMap::new();
 
     for c in string.chars() {
         if c == '{' {
@@ -97,11 +93,12 @@ fn get_params(string: &String) -> Vec<String> {
             } else {
                 is_in_block = false;
                 // println!("{}", word);
-                array.push(word.clone());
+                params.insert(word.clone(), "".to_string());
+                // array.push(word.clone());
                 word.clear();
             }
         }
     } //for loop
 
-    return array;
+    return params;
 }

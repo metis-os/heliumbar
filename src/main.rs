@@ -15,5 +15,6 @@ fn main() -> gtk::glib::ExitCode {
     let app = gtk::Application::builder().application_id(APP_ID).build();
     // println!("{:?}", std::thread::current().id().to_owned());
     app.connect_activate(build_ui);
+    modules::power::power_info().unwrap_or_default();
     app.run()
 } //main
