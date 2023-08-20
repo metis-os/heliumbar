@@ -1,17 +1,18 @@
 .root{
-  font-size:17px;
+  font-size:13px;
   margin-top:10px;
+  padding: 1px;
 }
 
 .time,.cpu,.ram{
-  background-color:grey;
+  background-color:#5c5f77;
   padding:8px 20px;
   border-radius:7px;
   color:white;
 }
 
 .toggle{
-  background-color:#000000;
+  background-color:#a832a4;
   font-size:20px;
   color:red;
   padding:5px 30px;
@@ -19,6 +20,6 @@
 
 
 .root{
-  padding:0 50px;
+  padding:5px 5px;
 }
 

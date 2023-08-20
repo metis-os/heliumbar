@@ -23,6 +23,7 @@
             "format":"󱂬   {workspace}:{activewindow}",
             "type":"hyprland",
             "align":"right"
+
           }
 
         

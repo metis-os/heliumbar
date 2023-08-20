@@ -3,12 +3,12 @@ name = "heliumbar"
 version = "0.1.0"
 edition = "2021"
 authors = [ "PwnWriter < hey@pwnwriter.xyz >" ]
-description = "A simple noble and non-reactive bar for wayland"
+description = "💭 A noble, light and aesthetic bar for Wayland // wlroots"
 readme = "README.md"
 repository = "https://github.com/pwnwriter/heliumbar"
 homepage = "https://github.com/pwnwriter/heliumbar.git"
 license = "MIT"
-keywords = ["unixporn", "Hyprland", "cursedbar"]
+keywords = ["unixporn", "Hyprland", "Wayland-bar"]
 categories = ["accessibility", "command-line" ]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -21,3 +21,6 @@ json = "0.12.4"
 glib = "0.18.1"
 regex = "1.9.3"
 tokio-uds = "0.2"
+upower_dbus = "0.3.2"
+futures = "0.3.28"
+zbus = "3.14.1"
