@@ -1,5 +1,3 @@
-use json::{self, JsonValue};
-
 pub fn format(string: &str, json_data: &str) -> Option<String> {
     let json_parse = json::parse(&json_data);
     if let Err(err) = json_parse {
