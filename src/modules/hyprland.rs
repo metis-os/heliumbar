@@ -1,11 +1,11 @@
 use gtk::traits::ContainerExt;
 
-use crate::ui::widget::{Align, WidgetConfig};
+use crate::builder::widgets_builder::{Align, WidgetConfig};
+use crate::network::hyprland_socket::listen;
 use crate::utils::{command, regex_matcher};
 use glib::MainContext;
 use gtk::prelude::*;
-
-use super::workspace::listen;
+// use super::workspace::listen;
 
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;
@@ -44,11 +44,20 @@ pub fn update_widget(label: gtk::Label, original: String) {
     if params.len() == 0 {
         return;
     }
-    let mut workspace: String = String::new();
-    let mut window: String = String::new();
     std::thread::spawn(move || rt.unwrap().block_on(listen(sender)));
 
     //listen for the socket
+    hyprland_signal_receiver(receiver, params, original, label);
+}
+
+fn hyprland_signal_receiver(
+    receiver: glib::Receiver<(String, String)>,
+    params: Vec<String>,
+    original: String,
+    label: gtk::Label,
+) {
+    let mut workspace: String = String::new();
+    let mut window: String = String::new();
     receiver.attach(None, move |(name, value)| {
         // println!("{}", name);
         if params.contains(&name) {
@@ -71,7 +80,7 @@ pub fn update_widget(label: gtk::Label, original: String) {
     });
 }
 
-pub fn get_params(string: &String) -> Vec<String> {
+fn get_params(string: &String) -> Vec<String> {
     let mut is_in_block = false;
     let mut word: String = String::new();
     let mut array = Vec::<String>::new();

@@ -1,14 +1,13 @@
+mod builder;
 mod config;
-mod ui;
+mod modules;
+mod network;
 mod utils;
 mod widgets;
 
-use std::process::id;
-
 use gtk::prelude::{ApplicationExt, ApplicationExtManual};
-use tokio::time::Sleep;
 
-use crate::{ui::elements::build_ui, widgets::workspace};
+use crate::builder::layer_builder::build_ui;
 
 fn main() -> gtk::glib::ExitCode {
     const APP_ID: &str = "com.heliumbar";

@@ -1,15 +1,12 @@
-// Create a widget in the menus
-
 use gtk::prelude::*;
 use gtk::ApplicationWindow;
 use gtk::Orientation;
 
 use crate::config;
+use crate::modules;
 use crate::utils;
-use crate::widgets::hyprland;
-use crate::widgets::ButtonWidget;
 use crate::widgets::LabelWidget;
-
+// s
 fn build_config_else_default(
     centered: &gtk::Box,
     configs: &Result<json::JsonValue, String>,
@@ -73,18 +70,13 @@ pub fn build_widgets(window: &ApplicationWindow, orientation: Orientation) {
     centered.style_context().add_class("center");
     right.style_context().add_class("right");
 
-    root.set_widget_name("root");
-    left.set_widget_name("left");
-    centered.set_widget_name("centered");
-    right.set_widget_name("right");
-
     root.set_center_widget(Some(&centered));
     root.pack_end(&right, false, true, 0);
     root.add(&left);
 
     let configs = config::user_config::read_config();
     if build_config_else_default(&centered, &configs) {
-        render_custom_widgets(left, right, centered, configs.unwrap());
+        render_widgets(left, right, centered, configs.unwrap());
     }
 
     window.add(&root);
@@ -120,12 +112,15 @@ pub fn check_alignment(align: &String) -> Align {
     }
 }
 
-pub fn render_custom_widgets(
+pub fn render_widgets(
     left: gtk::Box,
     right: gtk::Box,
     centered: gtk::Box,
     configs: json::JsonValue,
 ) {
+    let mut modules_name: Vec<String> = Vec::new();
+    modules_name.push("hyprland".to_string());
+
     let widgets = configs["widgets"].entries();
     for (key, value_json) in widgets {
         let format = value_json["format"].as_str().unwrap_or("").to_string();
@@ -147,14 +142,21 @@ pub fn render_custom_widgets(
             tooltip,
             name_of_widget,
         };
-        if type_of_widget == "hyprland" {
-            hyprland::build_label(&left, &centered, &right, data);
+        if modules_name.contains(&type_of_widget) {
+            handle_builtin_widgets(&left, &centered, &right, data);
         } else if type_of_widget == "label" {
             LabelWidget::build_label(&left, &centered, &right, data);
-        } else if type_of_widget == "button" {
-            ButtonWidget::build_button(&left, &centered, &right, data);
         } else {
             LabelWidget::build_label(&left, &centered, &right, data);
         }
     } //for
+}
+
+fn handle_builtin_widgets(
+    left: &gtk::Box,
+    centered: &gtk::Box,
+    right: &gtk::Box,
+    config: WidgetConfig,
+) {
+    modules::hyprland::build_label(&left, &centered, &right, config);
 }

@@ -1,7 +1,7 @@
 // HELIUMBAR ui / ux
 
+use crate::builder::widgets_builder::build_widgets;
 use crate::config;
-use crate::ui::widget::build_widgets;
 use gtk::gdk::*;
 use gtk::prelude::*;
 use gtk::Orientation;
