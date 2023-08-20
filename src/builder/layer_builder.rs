@@ -31,7 +31,7 @@ pub fn build_ui(app: &Application) {
         align_layer(&window, &data.position);
         window.connect_draw(move |win, context| draw(&win, context, &data));
     } else {
-        align_layer(&window, &Edge::Left);
+        align_layer(&window, &Edge::Top);
     }
 
     let display = Display::default().expect("Error happening");
@@ -74,7 +74,7 @@ pub struct LayerConfig {
 pub fn draw(_: &ApplicationWindow, context: &cairo::Context, config: &LayerConfig) -> Inhibit {
     context.set_source_rgba(config.color.0, config.color.1, config.color.2, config.alpha);
     context.set_operator(cairo::Operator::Screen);
-    context.paint().expect("ERROR drawing colors");
+    context.paint().unwrap_or_default();
     Inhibit(false)
 }
 
