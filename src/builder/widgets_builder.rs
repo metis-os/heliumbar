@@ -28,7 +28,7 @@ fn build_config_else_default(
         centered.add(&label);
         return false;
     };
-    return true;
+    true
 }
 
 fn load_css() {
@@ -38,7 +38,7 @@ fn load_css() {
         return;
     }
     let mut path = user.unwrap();
-    path.push_str(&utils::constants::CONFIG_STYLE);
+    path.push_str(utils::constants::CONFIG_STYLE);
 
     let provider = gtk::CssProvider::new();
     if let Err(err) = provider.load_from_path(&path) {
@@ -47,8 +47,8 @@ fn load_css() {
     }
 
     let screen = gtk::gdk::Screen::default();
-    if let None = screen {
-        return;
+    if screen.is_none() {
+        return
     }
 
     gtk::StyleContext::add_provider_for_screen(

@@ -31,7 +31,7 @@ fn setup_default(mut text: String) -> (String, Result<JsonValue, Error>) {
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;
 
-    let (mut text, jsondata) = setup_default(original.clone());
+    let (text, jsondata) = setup_default(original.clone());
 
     // println!("{}", text);
     let label = gtk::Label::builder().label(text).build();
