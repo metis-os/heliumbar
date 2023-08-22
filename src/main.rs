@@ -16,14 +16,25 @@ fn main() -> gtk::glib::ExitCode {
     let app = gtk::Application::builder().application_id(APP_ID).build();
     // println!("{:?}", std::thread::current().id().to_owned());
     app.connect_activate(build_ui);
-    // let (sender, receiver) = glib::MainContext::channel::<String>(glib::Priority::DEFAULT);
-    // let (sender, receiver) = channel();
-    std::thread::spawn(move || {
-        watcher_file();
-    });
+
     app.run()
 } //main
 
 fn watcher_file() {
-    let path = "/sys/class/power_supply/BAT0/status";
+    let path = "/sys/class/backlight/amdgpu_bl1/brightness";
+    let mut inotify = inotify::Inotify::init().unwrap();
+    let watch = inotify.watches().add(path, inotify::WatchMask::MODIFY);
+    if let Err(err) = watch {
+        println!("{}", err);
+        return;
+    }
+    // let watch = watch.unwrap();
+    let mut buffer = [0u8; 4096];
+    loop {
+        let events = inotify.read_events_blocking(&mut buffer);
+        if let Err(err) = events {
+            println!("{}", err);
+        }
+        //for loop
+    }
 } //watcher

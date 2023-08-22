@@ -28,8 +28,8 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
     }
     let base_path = base_path.unwrap();
     let path = format!("{}/brightness", base_path);
-    let mut buffer = [0u8; 30];
-    let mut max = match File::open(format!("{}/max_brightness", base_path)) {
+    let mut buffer = [0u8; 60];
+    let max = match File::open(format!("{}/max_brightness", base_path)) {
         Ok(mut file) => read_file_for_monitor(&mut file, &mut buffer)
             .parse::<f64>()
             .unwrap_or(255.0),
@@ -38,7 +38,7 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
             255.0
         }
     }; //max
-    let mut file = match File::open(path) {
+    let mut file = match File::open(&path) {
         Ok(file) => file,
         Err(err) => {
             println!("{}", err);
@@ -53,6 +53,15 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
     let (sender, receiver) = MainContext::channel::<(String, String)>(glib::Priority::DEFAULT);
     //lister
     listener::listen(receiver, original, label); //listen and update according to it
+                                                 //inotify
+    let mut inotify = inotify::Inotify::init().unwrap();
+    let watch = inotify.watches().add(&path, inotify::WatchMask::MODIFY);
+    if let Err(err) = watch {
+        println!("{}", err);
+        return;
+    } //
+
+    //inotify
     std::thread::spawn(move || {
         let mut previous_state: String = read_file_for_monitor(&mut file, &mut buffer);
         sender
@@ -63,7 +72,12 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
             .unwrap_or_default();
         let mut current_state: String;
         loop {
-            std::thread::sleep(interval);
+            let events = inotify.read_events_blocking(&mut buffer);
+            if let Err(err) = events {
+                println!("{}", err);
+                std::thread::sleep(interval);
+            }
+            println!("I am changing now");
             current_state = read_file_for_monitor(&mut file, &mut buffer);
             if previous_state == current_state {
                 continue;
