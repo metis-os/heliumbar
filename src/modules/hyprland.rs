@@ -31,7 +31,7 @@ fn setup_default(mut text: String) -> (String, Result<JsonValue, Error>) {
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
     let original: String = config.format;
 
-    let (mut text, jsondata) = setup_default(original.clone());
+    let (text, jsondata) = setup_default(original.clone());
 
     // println!("{}", text);
     let label = gtk::Label::builder().label(text).build();
@@ -60,7 +60,7 @@ pub fn update_widget(
         println!("{}", err);
         return;
     }
-    let mut params = get_params(&original);
+    let mut params = regex_matcher::get_params(&original);
     if params.len() == 0 {
         return;
     }
@@ -121,31 +121,4 @@ fn hyprland_signal_receiver(
         }
         glib::ControlFlow::Continue
     });
-}
-
-fn get_params(string: &String) -> HashMap<String, String> {
-    let mut is_in_block = false;
-    let mut word: String = String::new();
-    // let mut array = Vec::<String>::new();
-    let mut params: HashMap<String, String> = HashMap::new();
-
-    for c in string.chars() {
-        if c == '{' {
-            is_in_block = true;
-            continue;
-        } //if {}
-        if is_in_block {
-            if c != '}' {
-                word.push(c);
-            } else {
-                is_in_block = false;
-                // println!("{}", word);
-                params.insert(word.clone(), "".to_string());
-                // array.push(word.clone());
-                word.clear();
-            }
-        }
-    } //for loop
-
-    return params;
 }

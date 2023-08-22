@@ -1,0 +1,31 @@
+{
+    "alpha":0,
+    "align":"top",
+    "background":"#000000",
+    "widgets":{
+        "time":{
+            "format":"    {percentage} %",
+            "type":"battery",
+            "is_json":false,
+            "align":"left",
+            "refresh-rate":1
+          },
+        "cpu":{
+            "format":"󰃜 {} %",
+            "align":"center",
+            "is_json":false,
+            "command":"brillo | cut -d . -f1",
+            "refresh-rate":1
+          },
+        "ram":{
+            "format":"󱂬   {workspace}:{activewindow}",
+            "type":"hyprland",
+            "align":"right"
+
+          }
+
+        
+      }
+
+
+  }
