@@ -1,15 +1,14 @@
 use gtk::traits::ContainerExt;
 
-use crate::builder::widgets_builder::{Align, WidgetConfig};
+use crate::builder::widgets_builder::{self, Align, WidgetConfig};
 use crate::utils::{command, regex_matcher};
 use glib::MainContext;
 use gtk::prelude::*;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::process::{Command, Stdio};
-
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
-    let original: String = config.format;
+    let original: String = config.format.clone();
     let mut text = original.clone();
     if config.command.len() > 0 && config.refresh_rate == 0 {
         let out = command::run(&config.command).trim().to_string();
@@ -24,13 +23,7 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
         }
     } //if command
 
-    let label = gtk::Label::builder().label(text).build();
-    label.style_context().add_class(&config.name_of_widget);
-    match config.align {
-        Align::CENTER => center.add(&label),
-        Align::LEFT => left.add(&label),
-        Align::RIGHT => right.add(&label),
-    }
+    let label = widgets_builder::build_and_align(&text, &left, &center, &right, &config);
 
     if config.refresh_rate > 0 && config.command.len() > 0 {
         update_widget(

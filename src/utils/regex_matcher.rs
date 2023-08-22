@@ -1,3 +1,5 @@
+use json::{self, JsonValue};
+use std::collections::HashMap;
 pub fn format(string: &str, json_data: &str) -> Option<String> {
     let json_parse = json::parse(&json_data);
     if let Err(err) = json_parse {
@@ -41,3 +43,30 @@ pub fn format(string: &str, json_data: &str) -> Option<String> {
     //     println!("{}", capture.get(1).unwrap().as_str());
     // }
 }
+
+pub fn get_params(string: &String) -> HashMap<String, String> {
+    let mut is_in_block = false;
+    let mut word: String = String::new();
+    // let mut array = Vec::<String>::new();
+    let mut params: HashMap<String, String> = HashMap::new();
+
+    for c in string.chars() {
+        if c == '{' {
+            is_in_block = true;
+            continue;
+        } //if {}
+        if is_in_block {
+            if c != '}' {
+                word.push(c);
+            } else {
+                is_in_block = false;
+                // println!("{}", word);
+                params.insert(word.clone(), "".to_string());
+                // array.push(word.clone());
+                word.clear();
+            }
+        }
+    } //for loop
+
+    return params;
+} //

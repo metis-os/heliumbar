@@ -120,6 +120,13 @@ pub fn render_widgets(
 ) {
     let mut modules_name: Vec<String> = Vec::new();
     modules_name.push("hyprland".to_string());
+    modules_name.push("battery".to_string());
+    modules_name.push("cpu".to_string());
+    modules_name.push("ram".to_string());
+    modules_name.push("time".to_string());
+    modules_name.push("brightness".to_string());
+    modules_name.push("volume".to_string());
+    modules_name.push("tray".to_string());
 
     let widgets = configs["widgets"].entries();
     for (key, value_json) in widgets {
@@ -143,7 +150,7 @@ pub fn render_widgets(
             name_of_widget,
         };
         if modules_name.contains(&type_of_widget) {
-            handle_builtin_widgets(&left, &centered, &right, data);
+            handle_builtin_widgets(&left, &centered, &right, data, &type_of_widget);
         } else if type_of_widget == "label" {
             LabelWidget::build_label(&left, &centered, &right, data);
         } else {
@@ -157,6 +164,31 @@ fn handle_builtin_widgets(
     centered: &gtk::Box,
     right: &gtk::Box,
     config: WidgetConfig,
+    type_of_widget: &String,
 ) {
-    modules::hyprland::build_label(&left, &centered, &right, config);
+    if type_of_widget == "hyprland" {
+        modules::hyprland::build_label(&left, &centered, &right, config);
+    } else if type_of_widget == "battery" {
+        modules::battery::build_label(left, &centered, &right, config);
+    } else if type_of_widget == "brightness" {
+        modules::brightness::build_label(left, &centered, &right, config);
+    }
+}
+
+pub fn build_and_align(
+    text: &String,
+    left: &gtk::Box,
+    center: &gtk::Box,
+    right: &gtk::Box,
+    config: &WidgetConfig,
+) -> gtk::Label {
+    let label = gtk::Label::builder().label(text).build();
+    label.style_context().add_class(&config.name_of_widget);
+    match config.align {
+        Align::CENTER => center.add(&label),
+        Align::LEFT => left.add(&label),
+        Align::RIGHT => right.add(&label),
+    }
+
+    return label;
 }
