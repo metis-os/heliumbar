@@ -72,8 +72,7 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
             .unwrap_or_default();
         let mut current_state: String;
         loop {
-            let events = inotify.read_events_blocking(&mut buffer);
-            if let Err(err) = events {
+            if let Err(err) = inotify.read_events_blocking(&mut buffer) {
                 println!("{}", err);
                 std::thread::sleep(interval);
             }
