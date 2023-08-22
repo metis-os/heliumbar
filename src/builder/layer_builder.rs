@@ -29,7 +29,7 @@ pub fn build_ui(app: &Application) {
             _ => (),
         }
         align_layer(&window, &data.position);
-        window.connect_draw(move |win, context| draw(&win, context, &data));
+        window.connect_draw(move |win, context| draw(win, context, &data));
     } else {
         align_layer(&window, &Edge::Top);
     }
@@ -79,18 +79,18 @@ pub fn draw(_: &ApplicationWindow, context: &cairo::Context, config: &LayerConfi
 }
 
 pub fn extract_color(color: &str) -> Option<(f64, f64, f64)> {
-    if color.len() != 7 || !color.starts_with("#") {
+    if color.len() != 7 || !color.starts_with('#') {
         return None;
     }
-    let r_color = u8::from_str_radix(&color[1..3], 16).ok()? as f64 / 255 as f64;
-    let g_color = u8::from_str_radix(&color[3..5], 16).ok()? as f64 / 255 as f64;
-    let b_color = u8::from_str_radix(&color[5..7], 16).ok()? as f64 / 255 as f64;
+    let r_color = u8::from_str_radix(&color[1..3], 16).ok()? as f64 / 255_f64;
+    let g_color = u8::from_str_radix(&color[3..5], 16).ok()? as f64 / 255_f64;
+    let b_color = u8::from_str_radix(&color[5..7], 16).ok()? as f64 / 255_f64;
     Some((r_color, g_color, b_color))
 }
 
 pub fn read_window_config() -> Option<LayerConfig> {
     let config = config::user_config::read_config();
-    if let Err(_) = config {
+    if config.is_err() {
         return None;
     }
     let config = config.unwrap();
@@ -114,7 +114,7 @@ pub fn read_window_config() -> Option<LayerConfig> {
     }
 
     let mut sep_col = extract_color(&color);
-    if let None = sep_col {
+    if sep_col.is_none() {
         sep_col = Some((0.0, 0.0, 0.0));
     }
     Some(LayerConfig {

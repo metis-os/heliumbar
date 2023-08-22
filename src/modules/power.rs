@@ -1,8 +1,8 @@
 // use futures::stream::StreamExt;
 use upower_dbus::UPowerProxy;
 
-pub fn power_info () -> zbus::Result<()>  {
-futures::executor::block_on(async move {
+pub fn power_info() -> zbus::Result<()> {
+    futures::executor::block_on(async move {
         let connection = zbus::Connection::system().await?;
 
         let upower = UPowerProxy::new(&connection).await?;
@@ -13,5 +13,4 @@ futures::executor::block_on(async move {
 
         Ok(())
     })
-
 }
