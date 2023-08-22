@@ -166,12 +166,15 @@ fn handle_builtin_widgets(
     config: WidgetConfig,
     type_of_widget: &String,
 ) {
+    // println!("{}", type_of_widget);
     if type_of_widget == "hyprland" {
         modules::hyprland::build_label(&left, &centered, &right, config);
     } else if type_of_widget == "battery" {
         modules::battery::build_label(left, &centered, &right, config);
     } else if type_of_widget == "brightness" {
         modules::brightness::build_label(left, &centered, &right, config);
+    } else if type_of_widget == "tray" {
+        modules::tray::build_label(left, centered, right, config);
     }
 }
 

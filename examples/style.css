@@ -1,25 +1,23 @@
 .root{
-  font-size:13px;
-  margin-top:10px;
-  padding: 1px;
+  font-size:15px;
+  /* margin-top:10px; */
+  padding:5px 5px;
 }
 
-.time,.cpu,.ram{
+.battery,.brightness,.tray,.hyprland{
   background-color:#5c5f77;
   padding:8px 20px;
   border-radius:7px;
   color:white;
 }
 
-.toggle{
-  background-color:#a832a4;
-  font-size:20px;
-  color:red;
-  padding:5px 30px;
+.battery{
+  border-radius:7px 0 0 7px;
+  padding-right:5px;
+}
+.brightness{
+  border-radius:0px 7px 7px 0;
+  padding-left:5px;
 }
 
-
-.root{
-  padding:5px 5px;
-}
 

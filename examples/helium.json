@@ -3,26 +3,30 @@
     "align":"top",
     "background":"#000000",
     "widgets":{
-        "time":{
+        "battery":{
             "format":"    {percentage} %",
             "type":"battery",
             "is_json":false,
             "align":"left",
             "refresh-rate":1
           },
-        "cpu":{
+        "brightness":{
             "format":"󰃜 {} %",
-            "align":"center",
+            "align":"left",
             "type":"brightness",
             "refresh-rate":1
           },
-        "ram":{
+        
+          "tray":{
+            "type":"tray",
+            "align":"right"
+          },
+          "hyprland":{
             "format":"󱂬   {workspace}:{activewindow}",
             "type":"hyprland",
-            "align":"right"
+            "align":"center"
 
           }
-
         
       }
 
