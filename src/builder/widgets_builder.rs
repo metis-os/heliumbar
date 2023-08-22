@@ -170,6 +170,8 @@ fn handle_builtin_widgets(
         modules::hyprland::build_label(&left, &centered, &right, config);
     } else if type_of_widget == "battery" {
         modules::battery::build_label(left, &centered, &right, config);
+    } else if type_of_widget == "brightness" {
+        modules::brightness::build_label(left, &centered, &right, config);
     }
 }
 

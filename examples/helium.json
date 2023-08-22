@@ -4,17 +4,16 @@
     "background":"#000000",
     "widgets":{
         "time":{
-            "format":"    {} %",
-            "type":"label",
+            "format":"    {percentage} %",
+            "type":"battery",
             "is_json":false,
             "align":"left",
-            "command":"cat /sys/class/power_supply/*/capacity",
             "refresh-rate":1
           },
         "cpu":{
             "format":"󰃜 {} %",
-            "type":"label",
             "align":"center",
+            "type":"brightness",
             "is_json":false,
             "command":"brillo | cut -d . -f1",
             "refresh-rate":1

@@ -5,7 +5,7 @@ use std::io::{Read, Seek};
 use std::time::Duration;
 
 use crate::builder::widgets_builder::{self, Align, WidgetConfig};
-use crate::utils::constants::BATTERY_PATH;
+use crate::utils::constants::{BATTERY_PATH, BRIGHTNESS_PATH};
 use crate::utils::file_handler::{get_particular_dir_path, read_file_for_monitor};
 use crate::utils::{command, listener, regex_matcher};
 use glib::{MainContext, Receiver, Sender};
@@ -22,13 +22,22 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
 
 fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
     // let path = "/sys/class/power_supply/BAT0/capacity";
-    let base_path = get_particular_dir_path(BATTERY_PATH.to_string(), "capacity".to_string());
+    let base_path = get_particular_dir_path(BRIGHTNESS_PATH.to_string(), "brightness".to_string());
     if let None = base_path {
         return;
     }
     let base_path = base_path.unwrap();
-    let path = format!("{}/capacity", base_path);
+    let path = format!("{}/brightness", base_path);
     let mut buffer = [0u8; 30];
+    let mut max = match File::open(format!("{}/max_brightness", base_path)) {
+        Ok(mut file) => read_file_for_monitor(&mut file, &mut buffer)
+            .parse::<f64>()
+            .unwrap_or(255.0),
+        Err(err) => {
+            println!("{}", err);
+            255.0
+        }
+    }; //max
     let mut file = match File::open(path) {
         Ok(file) => file,
         Err(err) => {
@@ -47,7 +56,10 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
     std::thread::spawn(move || {
         let mut previous_state: String = read_file_for_monitor(&mut file, &mut buffer);
         sender
-            .send(("percentage".to_string(), previous_state.to_owned()))
+            .send((
+                "".to_string(),
+                (((previous_state.parse::<f64>().unwrap_or(1.0) / max) * 100.0) as i64).to_string(),
+            ))
             .unwrap_or_default();
         let mut current_state: String;
         loop {
@@ -58,7 +70,11 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
             }
             previous_state = current_state;
             sender
-                .send(("percentage".to_string(), previous_state.to_owned()))
+                .send((
+                    "".to_string(),
+                    (((previous_state.parse::<f64>().unwrap_or(1.0) / max) * 100.0) as i64)
+                        .to_string(),
+                ))
                 .unwrap_or_default();
             // sender.send((previous_state.parse::<f64>().unwrap_or(1.0) / 1000000.0).to_string());
         } //loop
