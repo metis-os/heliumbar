@@ -77,7 +77,7 @@ fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
                 println!("{}", err);
                 std::thread::sleep(interval);
             }
-            println!("I am changing now");
+            // println!("I am changing now");
             current_state = read_file_for_monitor(&mut file, &mut buffer);
             if previous_state == current_state {
                 continue;
