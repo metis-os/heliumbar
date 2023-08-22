@@ -5,6 +5,7 @@ use std::io::{Read, Seek};
 use std::time::Duration;
 
 use crate::builder::widgets_builder::{self, Align, WidgetConfig};
+use crate::utils::constants::BATTERY_PATH;
 use crate::utils::file_handler::read_file_for_monitor;
 use crate::utils::{command, listener, regex_matcher};
 use glib::{MainContext, Receiver, Sender};
@@ -20,8 +21,8 @@ pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config:
 }
 
 fn update_widget(label: gtk::Label, original: String, refresh_rate: i64) {
-    let path = "/sys/class/power_supply/BAT0/capacity";
-
+    // let path = "/sys/class/power_supply/BAT0/capacity";
+    let path = BATTERY_PATH;
     let mut buffer = [0u8; 30];
     let mut file = match File::open(path) {
         Ok(file) => file,

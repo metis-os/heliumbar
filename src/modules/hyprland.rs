@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use gtk::traits::ContainerExt;
 use json::{Error, JsonValue};
 
-use crate::builder::widgets_builder::{Align, WidgetConfig};
+use crate::builder::widgets_builder::{self, Align, WidgetConfig};
 use crate::network::hyprland_socket::listen;
 use crate::utils::{command, regex_matcher};
 use glib::MainContext;
@@ -29,18 +29,12 @@ fn setup_default(mut text: String) -> (String, Result<JsonValue, Error>) {
 }
 
 pub fn build_label(left: &gtk::Box, center: &gtk::Box, right: &gtk::Box, config: WidgetConfig) {
-    let original: String = config.format;
+    let original: String = config.format.clone();
 
     let (text, jsondata) = setup_default(original.clone());
 
+    let label = widgets_builder::build_and_align(&text, &left, &center, &right, &config);
     // println!("{}", text);
-    let label = gtk::Label::builder().label(text).build();
-    label.style_context().add_class(&config.name_of_widget);
-    match config.align {
-        Align::CENTER => center.add(&label),
-        Align::LEFT => left.add(&label),
-        Align::RIGHT => right.add(&label),
-    }
 
     update_widget(label, original, jsondata);
 } //build_label
@@ -121,31 +115,4 @@ fn hyprland_signal_receiver(
         }
         glib::ControlFlow::Continue
     });
-}
-
-fn get_params(string: &String) -> HashMap<String, String> {
-    let mut is_in_block = false;
-    let mut word: String = String::new();
-    // let mut array = Vec::<String>::new();
-    let mut params: HashMap<String, String> = HashMap::new();
-
-    for c in string.chars() {
-        if c == '{' {
-            is_in_block = true;
-            continue;
-        } //if {}
-        if is_in_block {
-            if c != '}' {
-                word.push(c);
-            } else {
-                is_in_block = false;
-                // println!("{}", word);
-                params.insert(word.clone(), "".to_string());
-                // array.push(word.clone());
-                word.clear();
-            }
-        }
-    } //for loop
-
-    return params;
 }
