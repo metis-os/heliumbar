@@ -3,7 +3,7 @@
 </p>
 <p align="center">
 <a href="https://crates.io/crates/heliumbar/"><img src="https://img.shields.io/crates/v/heliumbar?style=flat&amp;labelColor=56534b&amp;color=c1c1b6&amp;logo=Rust&amp;logoColor=white" alt="Crate Release"></a>
-<a href="https://github.com/pwnwriter/heliumbar/issues"><img src="https://img.shields.io/github/issues/pwnwriter/pwnvim.svg?style=flat-square&label=Issues&color=d77982"></a>
+<a href="https://github.com/pwnwriter/heliumbar/issues"><img src="https://img.shields.io/github/issues/pwnwriter/heliumbar.svg?style=flat-square&label=Issues&color=d77982"></a>
 <a href="https://github.com/pwnwriter/pwnwriter/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-white.svg" alt="MIT LICENSE"></a>
 <a href="https://ko-fi.com/pwnwriter"><img src="https://img.shields.io/badge/support-pwnwriter%20-pink?logo=kofi&logoColor=white" alt="Ko-fi"></a>
 <br>
